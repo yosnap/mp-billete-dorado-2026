@@ -1,0 +1,1 @@
+- [MP Billete Dorado 2026 — Proyecto](project-mp-billete-dorado.md) — arquitectura, decisiones Phase-01, estado de fases
