@@ -74,9 +74,9 @@ async def register(
         # 3. Detección de fraude — no bloquea, sólo registra eventos
         await fraud_detector.check(db, ip, user_agent)
 
-        # 4. Encriptar email con pgcrypto via SQL raw
+        # 4. Encriptar email con pgcrypto y codificar en base64 para VARCHAR
         encrypted_email_result = await db.execute(
-            text("SELECT pgp_sym_encrypt(:email, :key)"),
+            text("SELECT encode(pgp_sym_encrypt(:email, :key), 'base64')"),
             {"email": payload.email, "key": settings.pgcrypto_key},
         )
         encrypted_email: str = encrypted_email_result.scalar_one()
@@ -124,9 +124,9 @@ async def get_participant_by_code(
     if participant is None:
         return None
 
-    # Desencriptar email en memoria para uso interno
+    # Desencriptar email: decodifica base64 y luego desencripta con pgcrypto
     decrypted_result = await db.execute(
-        text("SELECT pgp_sym_decrypt(:data::bytea, :key)"),
+        text("SELECT pgp_sym_decrypt(decode(:data, 'base64'), :key)"),
         {"data": participant.email, "key": settings.pgcrypto_key},
     )
     participant.email = decrypted_result.scalar_one()

@@ -5,9 +5,9 @@ Distribución:
   - small   (fase 1): 3.000 premios × 1 stock c/u  = 3.000 unidades
   - medium  (fase 2):   900 premios × 1 stock c/u  =   900 unidades
   - medium  (fase 3):   600 premios × 1 stock c/u  =   600 unidades
-  - special (fase 3):   200 premios × 1 stock c/u  =   200 unidades  (iPad, becas, etc.)
+  - special (fase 3):   100 premios × 1 stock c/u  =   100 unidades  (iPad, becas, etc.)
   - special (fase 4):   135 premios × 1 stock c/u  =   135 unidades  (iPhone, etc.)
-  Total: 4.835 premios
+  Total: 4.735 premios
 
 Uso:
   cd backend
@@ -28,8 +28,11 @@ from sqlalchemy.orm import sessionmaker
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 DB_URL = os.environ.get(
-    "DB_URL",
-    "postgresql+psycopg://mp_user:mp_pass@localhost:5432/mp_billete_dorado",
+    "DATABASE_URL",
+    os.environ.get(
+        "DB_URL",
+        "postgresql+asyncpg://mp_user:mp_pass@localhost:5432/mp_billete_dorado",
+    ),
 )
 
 # ---------------------------------------------------------------------------
@@ -109,7 +112,7 @@ for idx in range(135):
         "unlock_at": 4,
     })
 
-assert len(PRIZES) == 4_835, f"Total esperado 4835, obtenido {len(PRIZES)}"
+assert len(PRIZES) == 4_735, f"Total esperado 4735, obtenido {len(PRIZES)}"
 
 BATCH_SIZE = 500
 

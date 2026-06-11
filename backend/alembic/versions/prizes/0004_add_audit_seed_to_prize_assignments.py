@@ -12,7 +12,7 @@ from alembic import op
 
 revision: str = "prizes_0004"
 down_revision: Union[str, None] = "prizes_0003"
-branch_labels: Union[str, Sequence[str], None] = ("prizes",)
+branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
