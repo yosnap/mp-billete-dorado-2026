@@ -1,17 +1,188 @@
 ---
-// Página placeholder — Phase-06 implementa la landing real
+export const prerender = true;
+
+import BaseLayout from "../layouts/base_layout.astro";
+import CounterIsland from "../components/counter_island.astro";
+import { Countdown } from "../components/countdown";
 ---
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MP Billete Dorado 2026</title>
-  </head>
-  <body class="bg-gray-50 flex items-center justify-center min-h-screen">
-    <div class="text-center">
-      <h1 class="text-3xl font-bold text-gray-900">MP Billete Dorado 2026</h1>
-      <p class="mt-2 text-gray-500">Plataforma en construcción</p>
+
+<BaseLayout
+  title="MP Billete Dorado 2026 — Participa y gana"
+  description="Encuentra tu billete dorado, valida el código y gira la ruleta para ganar premios increíbles en el sorteo de MainPaper 2026."
+>
+  <!-- NAV -->
+  <header class="sticky top-0 z-10 bg-white/90 backdrop-blur border-b border-gray-200">
+    <div class="mx-auto max-w-5xl px-4 py-3 flex items-center justify-between">
+      <span class="font-extrabold text-yellow-500 text-lg tracking-tight">MP Billete Dorado</span>
+      <a
+        href="/participar"
+        class="rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-white hover:bg-yellow-600 transition-colors"
+      >
+        Participar
+      </a>
     </div>
-  </body>
-</html>
+  </header>
+
+  <main>
+    <!-- 1. HERO -->
+    <section class="bg-gradient-to-br from-yellow-400 to-yellow-600 py-20 px-4 text-center text-white">
+      <div class="mx-auto max-w-2xl">
+        <div class="mb-4 inline-block rounded-full bg-white/20 px-4 py-1 text-sm font-medium">
+          Campaña 2026
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight">
+          MP Billete Dorado 2026
+        </h1>
+        <p class="mt-4 text-lg sm:text-xl text-yellow-100">
+          Encuentra tu billete especial, valida el código único y gira la ruleta para ganar uno de nuestros increíbles premios.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href="/participar"
+            class="rounded-xl bg-white text-yellow-600 font-bold px-8 py-4 text-base hover:bg-yellow-50 transition-colors shadow-lg"
+          >
+            Participar ahora
+          </a>
+          <a
+            href="#como-participar"
+            class="rounded-xl border-2 border-white/60 text-white font-semibold px-8 py-4 text-base hover:bg-white/10 transition-colors"
+          >
+            Cómo funciona
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CÓMO PARTICIPAR -->
+    <section id="como-participar" class="py-16 px-4 bg-white">
+      <div class="mx-auto max-w-4xl">
+        <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-12">
+          Cómo participar
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+          {[
+            {
+              step: "1",
+              icon: "🎫",
+              title: "Encuentra tu billete",
+              desc: "Adquiere un ejemplar de MainPaper y busca el billete dorado en su interior con el código único.",
+            },
+            {
+              step: "2",
+              icon: "✅",
+              title: "Valida el código",
+              desc: "Accede a esta página, introduce tu código y verifica que es válido para participar.",
+            },
+            {
+              step: "3",
+              icon: "🎡",
+              title: "Gira la ruleta",
+              desc: "Una vez registrado, gira la ruleta y descubre al instante qué premio has ganado.",
+            },
+          ].map(({ step, icon, title, desc }) => (
+            <div class="flex flex-col items-center text-center gap-4">
+              <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-yellow-100 text-3xl">
+                {icon}
+              </div>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-yellow-500">
+                  Paso {step}
+                </span>
+                <h3 class="mt-1 text-lg font-bold text-gray-900">{title}</h3>
+                <p class="mt-2 text-sm text-gray-500 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PREMIOS -->
+    <section class="py-16 px-4 bg-gray-50">
+      <div class="mx-auto max-w-4xl">
+        <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-4">
+          Premios disponibles
+        </h2>
+        <p class="text-center text-gray-500 mb-10">
+          Miles de premios repartidos entre los participantes.
+        </p>
+
+        <!-- Server island con contador en tiempo real -->
+        <div class="flex justify-center mb-12">
+          <CounterIsland server:defer>
+            <span slot="fallback" class="text-gray-400 text-sm animate-pulse">
+              Cargando premios...
+            </span>
+          </CounterIsland>
+        </div>
+
+        <!-- Categorías -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {[
+            {
+              label: "Premio Especial",
+              color: "border-yellow-400 bg-yellow-50",
+              badge: "bg-yellow-100 text-yellow-700",
+              items: ["Viaje para 2 personas", "Pack tecnología premium"],
+            },
+            {
+              label: "Premios Medianos",
+              color: "border-blue-300 bg-blue-50",
+              badge: "bg-blue-100 text-blue-700",
+              items: ["Cheques regalo", "Suscripciones anuales", "Experiencias"],
+            },
+            {
+              label: "Premios Pequeños",
+              color: "border-green-300 bg-green-50",
+              badge: "bg-green-100 text-green-700",
+              items: ["Descuentos exclusivos", "Merchandising MP", "Sorteos especiales"],
+            },
+          ].map(({ label, color, badge, items }) => (
+            <div class={`rounded-2xl border-2 p-6 ${color}`}>
+              <span class={`inline-block rounded-full px-3 py-1 text-xs font-bold mb-4 ${badge}`}>
+                {label}
+              </span>
+              <ul class="space-y-2">
+                {items.map((item) => (
+                  <li class="flex items-center gap-2 text-sm text-gray-700">
+                    <span class="text-yellow-500 font-bold">•</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. COUNTDOWN -->
+    <section class="py-16 px-4 bg-white">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-2">La campaña termina en</h2>
+        <p class="text-gray-500 mb-10">No pierdas tu oportunidad — el 15 de junio de 2026 cierra el sorteo.</p>
+        <Countdown client:visible targetDate="2026-06-15T00:00:00Z" />
+        <div class="mt-10">
+          <a
+            href="/participar"
+            class="inline-block rounded-xl bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-10 py-4 text-base transition-colors shadow"
+          >
+            Participar ahora
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-gray-200 bg-gray-50 py-8 px-4">
+    <div class="mx-auto max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+      <span>© 2026 MainPaper. Todos los derechos reservados.</span>
+      <nav class="flex gap-5">
+        <a href="/bases-legales" class="hover:text-gray-700 transition-colors">Bases Legales</a>
+        <a href="/privacidad" class="hover:text-gray-700 transition-colors">Privacidad</a>
+        <a href="/faq" class="hover:text-gray-700 transition-colors">FAQ</a>
+      </nav>
+    </div>
+  </footer>
+</BaseLayout>

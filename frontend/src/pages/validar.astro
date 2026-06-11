@@ -1,0 +1,52 @@
+---
+// Endpoint POST-only: valida código y redirige a /ruleta
+// GET → 405 Method Not Allowed
+if (Astro.request.method === "GET") {
+  return new Response("Method Not Allowed", {
+    status: 405,
+    headers: { Allow: "POST" },
+  });
+}
+
+import { apiClient, ApiError } from "../lib/api_client";
+
+let redirectUrl: string | null = null;
+let errorMsg: string | null = null;
+
+try {
+  const formData = await Astro.request.formData();
+  const code = (formData.get("code") as string | null)?.trim().toUpperCase() ?? "";
+
+  if (!code) {
+    errorMsg = "El campo código es obligatorio.";
+  } else {
+    const res = await apiClient.validateCode(code);
+    if (res.valid) {
+      redirectUrl = `/ruleta?pid=${res.participation_id}`;
+    } else {
+      errorMsg = "Código inválido.";
+    }
+  }
+} catch (err) {
+  if (err instanceof ApiError) {
+    const map: Record<number, string> = {
+      404: "Código no encontrado.",
+      409: "Este código ya fue utilizado.",
+      429: "Demasiados intentos. Espera unos minutos.",
+    };
+    errorMsg = map[err.status] ?? "Error al validar el código.";
+  } else {
+    errorMsg = "Error de conexión.";
+  }
+}
+
+if (redirectUrl) {
+  return Astro.redirect(redirectUrl, 302);
+}
+
+// En caso de error, redirige a /participar con mensaje codificado en query
+return Astro.redirect(
+  `/participar?error=${encodeURIComponent(errorMsg ?? "Error desconocido")}`,
+  302,
+);
+---

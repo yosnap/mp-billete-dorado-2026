@@ -1,0 +1,24 @@
+---
+import { apiClient } from "../lib/api_client";
+
+let availableCount = 0;
+let fetchError = false;
+
+try {
+  const prizes = await apiClient.getPrizesCatalog();
+  availableCount = prizes.filter((p) => p.available).length;
+} catch {
+  fetchError = true;
+}
+---
+
+{fetchError ? (
+  <span class="text-gray-400 text-sm">Premios no disponibles en este momento</span>
+) : (
+  <div class="flex flex-col items-center gap-1">
+    <span class="text-5xl font-extrabold text-yellow-500">{availableCount}</span>
+    <span class="text-sm text-gray-500 uppercase tracking-wide">premios disponibles</span>
+  </div>
+)}
+
+<slot name="fallback" />

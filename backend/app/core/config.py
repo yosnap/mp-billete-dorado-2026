@@ -35,6 +35,9 @@ class Settings(BaseSettings):
     # Admin — obligatorio, sin default para forzar configuración explícita en .env
     admin_token: str
 
+    # Encriptación de email con pgcrypto — cambiar en producción
+    pgcrypto_key: str = "dev-pgcrypto-key-change-in-prod"
+
     # CORS
     allowed_origins: list[str] = ["http://localhost:4321"]
 

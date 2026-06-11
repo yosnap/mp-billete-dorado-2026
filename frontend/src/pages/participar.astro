@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import { ParticipationForm } from "../components/participation_form";
+---
+
+<BaseLayout
+  title="Participar — MP Billete Dorado 2026"
+  description="Introduce tu código de billete y completa tu participación en el sorteo MP Billete Dorado 2026."
+>
+  <header class="border-b border-gray-200 bg-white px-4 py-3">
+    <div class="mx-auto max-w-5xl flex items-center gap-3">
+      <a href="/" class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Volver al inicio">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </a>
+      <span class="font-extrabold text-yellow-500 tracking-tight">MP Billete Dorado</span>
+    </div>
+  </header>
+
+  <main class="flex flex-col items-center justify-center min-h-[calc(100vh-57px)] px-4 py-12">
+    <div class="w-full max-w-md mb-8 text-center">
+      <h1 class="text-3xl font-extrabold text-gray-900">Participar en el sorteo</h1>
+      <p class="mt-2 text-gray-500">
+        Valida tu código y regístrate para girar la ruleta.
+      </p>
+    </div>
+
+    <ParticipationForm client:load />
+
+    <p class="mt-6 text-xs text-gray-400 text-center max-w-xs">
+      Al participar aceptas las
+      <a href="/bases-legales" class="underline hover:text-gray-600">bases legales</a>
+      del sorteo.
+    </p>
+  </main>
+</BaseLayout>
