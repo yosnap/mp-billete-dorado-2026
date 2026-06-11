@@ -7,6 +7,8 @@ from app.api.v1.health import router as health_router
 from app.core.config import get_settings
 from app.core.database import engine
 from app.core.logging import configure_logging
+from app.domains.codes.router import admin_router as codes_admin_router
+from app.domains.codes.router import router as codes_router
 
 settings = get_settings()
 
@@ -35,3 +37,5 @@ app.add_middleware(
 )
 
 app.include_router(health_router)
+app.include_router(codes_router, prefix="/v1/codes", tags=["codes"])
+app.include_router(codes_admin_router, prefix="/v1/admin", tags=["admin"])

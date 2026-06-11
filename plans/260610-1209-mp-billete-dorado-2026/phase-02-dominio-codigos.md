@@ -2,7 +2,7 @@
 
 ## Overview
 - **Prioridad:** High
-- **Estado:** pending
+- **Estado:** completed
 - **Agente:** `backend-specialist`
 - **Dependencias:** phase-01
 - **Estimación:** 3-4 días
@@ -16,16 +16,16 @@ Implementar el bounded context `codes`: generación/importación de los 45.000 c
 
 ## Requisitos
 ### Funcionales
-- [ ] Modelo `Code` con campos: `id`, `code` (único), `status` (unused/used/invalid), `activated_at`, `used_at`, `created_at`
-- [ ] Endpoint `POST /api/v1/codes/validate` — valida y marca como usado (atómico)
-- [ ] Endpoint `GET /api/v1/codes/{code}/status` — consulta estado sin marcar
-- [ ] Endpoint `POST /api/v1/admin/codes/import` — importación batch desde CSV (solo admin)
-- [ ] Generación de formato de código configurable (ej: `MP-XXXX-XXXX-XXXX`)
+- [x] Modelo `Code` con campos: `id`, `code` (único), `status` (unused/used/invalid), `activated_at`, `used_at`, `created_at`
+- [x] Endpoint `POST /api/v1/codes/validate` — valida y marca como usado (atómico)
+- [x] Endpoint `GET /api/v1/codes/{code}/status` — consulta estado sin marcar
+- [x] Endpoint `POST /api/v1/admin/codes/import` — importación batch desde CSV (solo admin)
+- [x] Generación de formato de código configurable (ej: `MP-XXXX-XXXX-XXXX`)
 
 ### No Funcionales
-- [ ] Validación atómica con `SELECT FOR UPDATE` o advisory lock PostgreSQL
-- [ ] Redis caché del estado del código (TTL 60s) para reducir reads a DB
-- [ ] Rate limiting: máx 5 intentos de validación por IP en 10 minutos
+- [x] Validación atómica con `SELECT FOR UPDATE` o advisory lock PostgreSQL
+- [x] Redis caché del estado del código (TTL 60s) para reducir reads a DB
+- [x] Rate limiting: máx 5 intentos de validación por IP en 10 minutos
 - [ ] Respuesta < 200ms en p95 bajo carga
 
 ## Arquitectura
@@ -60,18 +60,18 @@ POST /api/v1/codes/validate
 8. Verificar atomicidad con test de concurrencia (2 requests simultáneos al mismo código)
 
 ## Todo List
-- [ ] Modelo `Code` creado con índices correctos
-- [ ] Migración aplicada sin errores
-- [ ] `POST /validate` devuelve 200 en código válido, 409 en código ya usado, 404 en código inexistente
-- [ ] Dos requests simultáneos al mismo código → solo uno gana (test de concurrencia)
-- [ ] Redis cachea correctamente el estado
-- [ ] Rate limiting activo: 6º intento desde misma IP rechazado con 429
-- [ ] 45.000 códigos importados correctamente
+- [x] Modelo `Code` creado con índices correctos
+- [x] Migración aplicada sin errores
+- [x] `POST /validate` devuelve 200 en código válido, 409 en código ya usado, 404 en código inexistente
+- [x] Dos requests simultáneos al mismo código → solo uno gana (test de concurrencia)
+- [x] Redis cachea correctamente el estado
+- [x] Rate limiting activo: 6º intento desde misma IP rechazado con 429
+- [x] 45.000 códigos importados correctamente
 
 ## Criterios de Éxito
-- [ ] Test de concurrencia con 10 requests simultáneos al mismo código: exactamente 1 exitoso
-- [ ] p95 de `POST /validate` < 200ms bajo 500 VUs concurrentes
-- [ ] 0 códigos duplicados tras importación masiva
+- [x] Test de concurrencia con 10 requests simultáneos al mismo código: exactamente 1 exitoso
+- [ ] p95 de `POST /validate` < 200ms bajo 500 VUs concurrentes (requiere k6/locust — pendiente F8)
+- [x] 0 códigos duplicados tras importación masiva
 
 ## Riesgos
 | Riesgo | Probabilidad | Mitigación |

@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
 
+    # Admin — obligatorio, sin default para forzar configuración explícita en .env
+    admin_token: str
+
     # CORS
     allowed_origins: list[str] = ["http://localhost:4321"]
 
