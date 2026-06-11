@@ -80,6 +80,9 @@ services:
       - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
       - SECRET_KEY=${SECRET_KEY}
       - APP_ENV=${APP_ENV:-development}
+      - DEBUG=${DEBUG:-false}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
     depends_on:
       postgres:
         condition: service_healthy
