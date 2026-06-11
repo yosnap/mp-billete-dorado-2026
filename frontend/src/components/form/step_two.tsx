@@ -72,7 +72,16 @@ export function StepTwo({ participationId: _participationId, code }: StepTwoProp
         consent_legal: fields.consent_legal,
         consent_marketing: fields.consent_marketing,
       });
-      window.location.href = `/ruleta?pid=${res.participation_id}`;
+
+      // Escribir participation_id en cookie httpOnly server-side (nunca en URL)
+      const cookieRes = await fetch("/api/set-participation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ participation_id: res.participation_id }),
+      });
+      if (!cookieRes.ok) throw new Error("Error al establecer sesión.");
+      const { redirect } = await cookieRes.json() as { redirect: string };
+      window.location.href = redirect;
     } catch (err) {
       if (err instanceof ApiError) {
         if (err.status === 409) {

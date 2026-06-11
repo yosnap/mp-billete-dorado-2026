@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import { isAdminAuthenticated, buildAdminCookie } from "../../lib/auth";
+
+// Si ya está autenticado, redirigir al dashboard
+if (isAdminAuthenticated(Astro.request)) {
+  return Astro.redirect("/admin", 302);
+}
+
+let errorMsg: string | null = null;
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+  const token = (formData.get("token") as string | null)?.trim() ?? "";
+  const expected = import.meta.env.ADMIN_TOKEN ?? "";
+
+  if (!token) {
+    errorMsg = "El token es obligatorio.";
+  } else if (!expected || token !== expected) {
+    errorMsg = "Token incorrecto.";
+  } else {
+    // Token válido: establecer cookie y redirigir
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/admin",
+        "Set-Cookie": buildAdminCookie(token),
+      },
+    });
+  }
+}
+---
+
+<BaseLayout title="Admin Login — MP Billete Dorado" noindex={true}>
+  <main class="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50">
+    <div class="w-full max-w-sm">
+      <div class="mb-8 text-center">
+        <span class="font-extrabold text-yellow-500 text-xl tracking-tight">MP Admin</span>
+        <p class="mt-2 text-sm text-gray-500">Acceso restringido al panel de administración.</p>
+      </div>
+
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <form method="POST" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="token" class="text-sm font-medium text-gray-700">
+              Token de acceso <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="token"
+              name="token"
+              type="password"
+              required
+              autocomplete="current-password"
+              class="rounded-lg border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+              placeholder="••••••••"
+            />
+          </div>
+
+          {errorMsg && (
+            <p class="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700" role="alert">
+              {errorMsg}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            class="rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-500 focus-visible:ring-offset-2"
+          >
+            Entrar al panel
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

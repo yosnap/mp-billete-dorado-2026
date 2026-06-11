@@ -1,0 +1,18 @@
+---
+import AdminLayout from "../../layouts/admin-layout.astro";
+import { FraudTable } from "../../components/admin/fraud-table";
+---
+
+<AdminLayout title="Fraude" currentPath="/admin/fraude">
+  <div class="max-w-5xl mx-auto flex flex-col gap-6">
+    <div>
+      <h1 class="text-2xl font-extrabold text-gray-900">Flags de Fraude</h1>
+      <p class="mt-1 text-sm text-gray-500">
+        Participaciones marcadas automáticamente por el sistema de detección.
+        Invalida las que confirmes como fraudulentas.
+      </p>
+    </div>
+
+    <FraudTable client:load />
+  </div>
+</AdminLayout>

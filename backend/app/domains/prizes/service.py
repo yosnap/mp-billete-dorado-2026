@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domains.codes.models import Code
+from app.domains.notifications.tasks import send_notification
 from app.domains.prizes.cache import (
     get_participation_count,
     get_prizes_catalog,
@@ -136,6 +137,14 @@ async def spin(db: AsyncSession, participation_id: uuid.UUID) -> SpinResponse:
             "spin result=no_win participation=%s phase=%d available=%d roll=%.6f",
             masked_pid, phase, len(available), audit_roll,
         )
+        # Trigger asíncrono: encolar email de no-ganador
+        try:
+            send_notification.delay(str(participation_id), "no_prize", {})
+        except Exception as notify_exc:
+            logger.error(
+                "spin notify_no_prize_enqueue_failed participation=%s error=%s",
+                masked_pid, str(notify_exc)[:100],
+            )
         return SpinResponse(won=False, prize=None)
 
     weights = [p.remaining_quantity for p in available]
@@ -206,6 +215,26 @@ async def spin(db: AsyncSession, participation_id: uuid.UUID) -> SpinResponse:
         description=locked_prize.description,
         available=locked_prize.remaining_quantity > 0,
     )
+
+    # Trigger asíncrono: encolar email de ganador para el participante
+    # El participante se obtiene por code_id=participation_id
+    try:
+        send_notification.delay(
+            str(participation_id),
+            "winner",
+            {
+                "prize_name": locked_prize.name,
+                "prize_description": locked_prize.description,
+                "code": str(participation_id),
+            },
+        )
+    except Exception as notify_exc:
+        # El fallo de la notificación no debe revertir el spin ya confirmado
+        logger.error(
+            "spin notify_enqueue_failed participation=%s error=%s",
+            masked_pid,
+            str(notify_exc)[:100],
+        )
 
     logger.info(
         "spin result=win participation=%s prize=%s phase=%d remaining=%d",

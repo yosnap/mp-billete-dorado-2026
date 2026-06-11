@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../layouts/base_layout.astro";
+import { RouletteWheel } from "../components/roulette-wheel";
+import { getParticipationId } from "../lib/auth";
+import { apiClient, ApiError } from "../lib/api_client";
+import type { SpinResult } from "../types/api";
+
+// Verificar sesión: participation_id debe estar en cookie httpOnly
+const participationId = getParticipationId(Astro.request);
+if (!participationId) {
+  return Astro.redirect("/participar", 302);
+}
+
+// Ejecutar el spin server-side para evitar manipulación client-side
+let spinResult: SpinResult | null = null;
+let errorMsg: string | null = null;
+
+try {
+  spinResult = await apiClient.spinRoulette(participationId);
+} catch (err) {
+  if (err instanceof ApiError) {
+    if (err.status === 409) {
+      // Ya giró — redirigir al resultado existente si disponible
+      errorMsg = "Ya has girado la ruleta con este código.";
+    } else if (err.status === 403) {
+      return Astro.redirect("/participar", 302);
+    } else {
+      errorMsg = "Error al girar la ruleta. Inténtalo de nuevo.";
+    }
+  } else {
+    errorMsg = "Error de conexión. Comprueba tu internet.";
+  }
+}
+---
+
+<BaseLayout
+  title="Girando la Ruleta — MP Billete Dorado 2026"
+  description="Gira la ruleta y descubre si has ganado un premio en el sorteo MP Billete Dorado 2026."
+>
+  <header class="border-b border-gray-200 bg-white px-4 py-3">
+    <div class="mx-auto max-w-5xl flex items-center gap-3">
+      <span class="font-extrabold text-yellow-500 tracking-tight">MP Billete Dorado</span>
+    </div>
+  </header>
+
+  <main class="flex flex-col items-center justify-center min-h-[calc(100vh-57px)] px-4 py-12">
+    {errorMsg ? (
+      <div class="w-full max-w-md text-center">
+        <div class="rounded-2xl border border-red-200 bg-red-50 p-8">
+          <p class="text-4xl mb-4">😔</p>
+          <h1 class="text-xl font-bold text-gray-900 mb-2">Algo salió mal</h1>
+          <p class="text-gray-600 mb-6">{errorMsg}</p>
+          <a
+            href="/participar"
+            class="inline-block rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 transition-colors"
+          >
+            Volver a participar
+          </a>
+        </div>
+      </div>
+    ) : (
+      <div class="w-full max-w-lg text-center">
+        <h1 class="text-2xl font-extrabold text-gray-900 mb-2">¡Es tu momento!</h1>
+        <p class="text-gray-500 mb-8">La ruleta está girando... ¿cuál será tu premio?</p>
+
+        <RouletteWheel
+          client:load
+          spinResult={spinResult!}
+          redirectDelay={3500}
+        />
+      </div>
+    )}
+  </main>
+</BaseLayout>

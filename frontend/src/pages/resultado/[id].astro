@@ -1,0 +1,65 @@
+---
+import BaseLayout from "../../layouts/base_layout.astro";
+import { ResultCard } from "../../components/result-card";
+import { apiClient, ApiError } from "../../lib/api_client";
+import type { SpinResult } from "../../types/api";
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect("/participar", 302);
+}
+
+let result: SpinResult | null = null;
+let errorMsg: string | null = null;
+
+try {
+  result = await apiClient.getSpinResult(id);
+} catch (err) {
+  if (err instanceof ApiError) {
+    if (err.status === 404) {
+      errorMsg = "Resultado no encontrado.";
+    } else {
+      errorMsg = "Error al cargar el resultado.";
+    }
+  } else {
+    errorMsg = "Error de conexión.";
+  }
+}
+---
+
+<BaseLayout
+  title={result?.won ? `¡Ganaste! — MP Billete Dorado 2026` : "Tu resultado — MP Billete Dorado 2026"}
+  description="Conoce el resultado de tu participación en el sorteo MP Billete Dorado 2026."
+>
+  <header class="border-b border-gray-200 bg-white px-4 py-3">
+    <div class="mx-auto max-w-5xl flex items-center gap-3">
+      <a href="/" class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Volver al inicio">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </a>
+      <span class="font-extrabold text-yellow-500 tracking-tight">MP Billete Dorado</span>
+    </div>
+  </header>
+
+  <main class="flex flex-col items-center justify-center min-h-[calc(100vh-57px)] px-4 py-12">
+    {errorMsg ? (
+      <div class="w-full max-w-md text-center">
+        <div class="rounded-2xl border border-red-200 bg-red-50 p-8">
+          <p class="text-4xl mb-4">😔</p>
+          <h1 class="text-xl font-bold text-gray-900 mb-2">Algo salió mal</h1>
+          <p class="text-gray-600 mb-6">{errorMsg}</p>
+          <a
+            href="/"
+            class="inline-block rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 transition-colors"
+          >
+            Volver al inicio
+          </a>
+        </div>
+      </div>
+    ) : (
+      <ResultCard client:load result={result!} />
+    )}
+  </main>
+</BaseLayout>

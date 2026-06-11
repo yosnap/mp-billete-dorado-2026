@@ -1,0 +1,88 @@
+---
+interface Props {
+  title: string;
+  currentPath?: string;
+}
+
+const { title, currentPath = "" } = Astro.props;
+
+const navLinks = [
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/premios", label: "Premios" },
+  { href: "/admin/fraude", label: "Fraude" },
+];
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <title>{title} — MP Admin</title>
+    <style is:global>
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-900 min-h-screen">
+    <!-- Sidebar / topbar -->
+    <div class="flex min-h-screen">
+      <!-- Sidebar (md+) -->
+      <aside class="hidden md:flex flex-col w-56 bg-gray-900 text-white shrink-0">
+        <div class="px-5 py-5 border-b border-gray-700">
+          <span class="font-extrabold text-yellow-400 tracking-tight text-sm">MP Billete Dorado</span>
+          <p class="text-xs text-gray-400 mt-0.5">Panel Admin</p>
+        </div>
+        <nav class="flex-1 py-4">
+          {navLinks.map(({ href, label }) => (
+            <a
+              href={href}
+              class={`flex items-center px-5 py-2.5 text-sm font-medium transition-colors ${
+                currentPath === href
+                  ? "bg-yellow-500/20 text-yellow-400 border-r-2 border-yellow-400"
+                  : "text-gray-300 hover:bg-gray-800 hover:text-white"
+              }`}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+        <div class="px-5 py-4 border-t border-gray-700">
+          <a
+            href="/admin/logout"
+            class="text-xs text-gray-400 hover:text-gray-200 transition-colors"
+          >
+            Cerrar sesión
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- Mobile header -->
+        <header class="md:hidden flex items-center justify-between bg-gray-900 text-white px-4 py-3">
+          <span class="font-extrabold text-yellow-400 text-sm">MP Admin</span>
+          <nav class="flex gap-3">
+            {navLinks.map(({ href, label }) => (
+              <a
+                href={href}
+                class={`text-xs font-medium ${
+                  currentPath === href ? "text-yellow-400" : "text-gray-300"
+                }`}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        </header>
+
+        <!-- Page content -->
+        <main class="flex-1 p-4 md:p-8">
+          <slot />
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

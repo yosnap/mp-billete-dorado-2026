@@ -1,0 +1,17 @@
+---
+import AdminLayout from "../../layouts/admin-layout.astro";
+import { PrizesTable } from "../../components/admin/prizes-table";
+---
+
+<AdminLayout title="Premios" currentPath="/admin/premios">
+  <div class="max-w-5xl mx-auto flex flex-col gap-6">
+    <div>
+      <h1 class="text-2xl font-extrabold text-gray-900">Gestión de Premios</h1>
+      <p class="mt-1 text-sm text-gray-500">
+        Activa o desactiva premios y consulta el stock disponible en tiempo real.
+      </p>
+    </div>
+
+    <PrizesTable client:load />
+  </div>
+</AdminLayout>
