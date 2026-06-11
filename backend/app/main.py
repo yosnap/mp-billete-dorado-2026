@@ -9,6 +9,8 @@ from app.core.database import engine
 from app.core.logging import configure_logging
 from app.domains.codes.router import admin_router as codes_admin_router
 from app.domains.codes.router import router as codes_router
+from app.domains.prizes.router import admin_router as prizes_admin_router
+from app.domains.prizes.router import router as prizes_router
 
 settings = get_settings()
 
@@ -37,5 +39,7 @@ app.add_middleware(
 )
 
 app.include_router(health_router)
-app.include_router(codes_router, prefix="/v1/codes", tags=["codes"])
-app.include_router(codes_admin_router, prefix="/v1/admin", tags=["admin"])
+app.include_router(codes_router, prefix="/api/v1/codes", tags=["codes"])
+app.include_router(codes_admin_router, prefix="/api/v1/admin", tags=["admin"])
+app.include_router(prizes_router, prefix="/api/v1/prizes", tags=["prizes"])
+app.include_router(prizes_admin_router, prefix="/api/v1/admin", tags=["admin"])

@@ -10,7 +10,7 @@
 |----|-----------------------------------|----------------------|---------|--------------------|
 | 01 | Setup e Infraestructura           | `backend-specialist` | completed | —                |
 | 02 | Dominio de Códigos (SDD)          | `backend-specialist` | pending | phase-01           |
-| 03 | Motor de Ruleta y Premios         | `backend-specialist` | pending | phase-02           |
+| 03 | Motor de Ruleta y Premios         | `backend-specialist` | completed | phase-02         |
 | 04 | Participantes, Auth y Fraude      | `backend-specialist` | pending | phase-02           |
 | 05 | Notificaciones y Email Automation | `backend-specialist` | pending | phase-03, phase-04 |
 | 06 | Frontend Astro 6.4 (Landing + Formulario) | `fullstack-developer` | pending | phase-02        |
