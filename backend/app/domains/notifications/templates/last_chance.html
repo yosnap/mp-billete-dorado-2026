@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Última oportunidad — MP Billete Dorado cierra pronto{% endblock %}
+{% block header_subtitle %}¡El tiempo se acaba!{% endblock %}
+
+{% block content %}
+<h2>{{ full_name }}, quedan solo {{ days_left | default(7) }} días</h2>
+
+<p>
+  La campaña <strong>MP Billete Dorado 2026</strong> cierra el
+  <strong>{{ deadline_date | default('30 de septiembre de 2026') }}</strong>.
+  Si aún no has girado la ruleta, este es tu último momento.
+</p>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%"
+       style="background:#fff3cd; border:1px solid #ffc107; border-radius:6px; margin:16px 0;">
+  <tr>
+    <td style="padding:16px 20px; text-align:center;">
+      <p style="margin:0; font-size:18px; font-weight:bold; color:#856404;">
+        ⏳ {{ days_left | default(7) }} días para participar
+      </p>
+    </td>
+  </tr>
+</table>
+
+<p>
+  Quedan <strong>{{ prizes_remaining | default('premios disponibles') }}</strong> en el catálogo.
+  ¡No dejes escapar tu oportunidad de ganar!
+</p>
+
+<div class="btn-wrapper">
+  <a href="{{ campaign_url | default('https://billetedorado.mainpaper.com') }}" class="btn">
+    Participar antes del cierre
+  </a>
+</div>
+{% endblock %}
+
+{% block footer_extra %}
+<p>
+  No deseas recibir comunicaciones de marketing de MainPaper ·
+  <a href="{{ unsubscribe_url }}">Darse de baja</a>
+</p>
+{% endblock %}

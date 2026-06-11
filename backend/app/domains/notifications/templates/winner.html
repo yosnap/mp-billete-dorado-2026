@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}¡Has ganado un premio en MP Billete Dorado!{% endblock %}
+{% block header_subtitle %}¡Enhorabuena, eres un ganador!{% endblock %}
+
+{% block content %}
+<h2>¡Felicidades, {{ full_name }}!</h2>
+
+<p>
+  La ruleta ha girado a tu favor. Has ganado:
+</p>
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%"
+       style="background:#fffbea; border:2px solid #b8960c; border-radius:8px; margin:16px 0;">
+  <tr>
+    <td style="padding:20px; text-align:center;">
+      <p style="font-size:22px; font-weight:bold; color:#b8960c; margin:0;">
+        {{ prize_name }}
+      </p>
+      {% if prize_description %}
+      <p style="color:#555555; font-size:14px; margin:8px 0 0;">{{ prize_description }}</p>
+      {% endif %}
+    </td>
+  </tr>
+</table>
+
+<p><strong>¿Cómo reclamar tu premio?</strong></p>
+<ol style="color:#333333; font-size:15px; line-height:1.8;">
+  <li>Guarda este email como comprobante.</li>
+  <li>Acude a cualquier punto de venta MainPaper con tu DNI o pasaporte.</li>
+  <li>Presenta el código de participación: <strong>{{ code | default('—') }}</strong></li>
+  <li>Plazo para recogerlo: <strong>{{ deadline | default('60 días desde la fecha de la campaña') }}</strong>.</li>
+</ol>
+
+<div class="btn-wrapper">
+  <a href="{{ campaign_url | default('https://billetedorado.mainpaper.com') }}/premio" class="btn">
+    Ver detalles del premio
+  </a>
+</div>
+
+<p style="color:#666666; font-size:13px;">
+  Si tienes dudas, contáctanos en
+  <a href="mailto:premios@mainpaper.com" style="color:#b8960c;">premios@mainpaper.com</a>.
+</p>
+{% endblock %}

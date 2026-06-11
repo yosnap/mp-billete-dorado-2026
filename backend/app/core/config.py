@@ -41,6 +41,12 @@ class Settings(BaseSettings):
     # CORS
     allowed_origins: list[str] = ["http://localhost:4321"]
 
+    # SendGrid — requerido para envío de emails en producción
+    sendgrid_api_key: str = ""
+
+    # Remitente por defecto para todos los emails de la campaña
+    email_from: str = "noreply@mainpaper.com"
+
 
 @lru_cache
 def get_settings() -> Settings:

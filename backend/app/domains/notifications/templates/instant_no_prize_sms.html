@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Gracias por participar en MP Billete Dorado{% endblock %}
+{% block header_subtitle %}Resultado de tu participación{% endblock %}
+
+{% block content %}
+<h2>Hola, {{ full_name }}</h2>
+
+<p>
+  La ruleta acaba de girar con tu participación en
+  <strong>MP Billete Dorado 2026</strong>.
+</p>
+
+<p>
+  En esta ocasión no ha sido tu turno, pero la campaña sigue activa
+  hasta el <strong>30 de septiembre de 2026</strong>.
+</p>
+
+<p>
+  A medida que crecen las participaciones se desbloquean nuevos premios.
+  ¡Comparte la campaña y anima a tus amigos a participar!
+</p>
+
+<div class="btn-wrapper">
+  <a href="{{ campaign_url | default('https://billetedorado.mainpaper.com') }}" class="btn">
+    Descubrir nuevos premios
+  </a>
+</div>
+
+<p style="color:#666666; font-size:13px;">
+  Gracias por confiar en MainPaper.
+</p>
+{% endblock %}

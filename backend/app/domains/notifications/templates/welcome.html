@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Bienvenido a MP Billete Dorado 2026{% endblock %}
+{% block header_subtitle %}¡Tu participación está registrada!{% endblock %}
+
+{% block content %}
+<h2>¡Bienvenido, {{ full_name }}!</h2>
+
+<p>
+  Gracias por registrarte en <strong>MP Billete Dorado 2026</strong>.
+  Tu participación con el código <strong>{{ code }}</strong> ha sido validada correctamente.
+</p>
+
+<p>
+  Ahora puedes girar la ruleta y descubrir si eres uno de los
+  <strong>4.835 afortunados</strong> que ganan un premio esta campaña.
+</p>
+
+<div class="btn-wrapper">
+  <a href="{{ campaign_url | default('https://billetedorado.mainpaper.com') }}/ruleta" class="btn">
+    Girar la ruleta ahora
+  </a>
+</div>
+
+<p style="color:#666666; font-size:13px;">
+  Si no realizaste este registro, puedes ignorar este email.
+  Tu código permanece sin usar hasta que tú lo actives.
+</p>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevos premios desbloqueados en MP Billete Dorado{% endblock %}
+{% block header_subtitle %}El catálogo acaba de crecer{% endblock %}
+
+{% block content %}
+<h2>¡Nuevos premios disponibles, {{ full_name }}!</h2>
+
+<p>
+  Gracias a la participación masiva en <strong>MP Billete Dorado 2026</strong>,
+  hemos desbloqueado una nueva fase de premios.
+</p>
+
+{% if new_prizes %}
+<p><strong>Premios recién desbloqueados:</strong></p>
+<table cellpadding="0" cellspacing="0" border="0" width="100%"
+       style="margin:0 0 16px; border-collapse:collapse;">
+  {% for prize in new_prizes %}
+  <tr>
+    <td style="padding:10px 0; border-bottom:1px solid #eeeeee; font-size:15px; color:#333333;">
+      🎁 {{ prize }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<p>
+  Fase {{ phase_number | default('') }} activa — quedan
+  <strong>{{ prizes_remaining | default('muchos') }} premios</strong> por asignar.
+  ¡No pierdas tu oportunidad!
+</p>
+
+<div class="btn-wrapper">
+  <a href="{{ campaign_url | default('https://billetedorado.mainpaper.com') }}/premios" class="btn">
+    Ver todos los premios
+  </a>
+</div>
+{% endblock %}
+
+{% block footer_extra %}
+<p>
+  No deseas recibir comunicaciones de marketing de MainPaper·
+  <a href="{{ unsubscribe_url }}">Darse de baja</a>
+</p>
+{% endblock %}

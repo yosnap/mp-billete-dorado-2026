@@ -10,6 +10,8 @@ from app.core.logging import configure_logging
 from app.domains.codes.router import admin_router as codes_admin_router
 from app.domains.codes.router import router as codes_router
 from app.domains.fraud.router import admin_fraud_router
+from app.domains.notifications.router import admin_router as notifications_admin_router
+from app.domains.notifications.router import public_router as notifications_public_router
 from app.domains.participants.router import router as participants_router
 from app.domains.prizes.router import admin_router as prizes_admin_router
 from app.domains.prizes.router import router as prizes_router
@@ -47,3 +49,13 @@ app.include_router(prizes_router, prefix="/api/v1/prizes", tags=["prizes"])
 app.include_router(prizes_admin_router, prefix="/api/v1/admin", tags=["admin"])
 app.include_router(participants_router, prefix="/api/v1/participants", tags=["participants"])
 app.include_router(admin_fraud_router, prefix="/api/v1/admin/fraud", tags=["admin"])
+app.include_router(
+    notifications_admin_router,
+    prefix="/api/v1/admin/notifications",
+    tags=["admin"],
+)
+app.include_router(
+    notifications_public_router,
+    prefix="/api/v1/notifications",
+    tags=["notifications"],
+)
