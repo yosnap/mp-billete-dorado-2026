@@ -38,7 +38,7 @@ export function isAdminAuthenticated(request: Request): boolean {
 export function buildAdminCookie(token: string): string {
   return [
     `${ADMIN_TOKEN_COOKIE}=${encodeURIComponent(token)}`,
-    "Path=/admin",
+    "Path=/",
     "HttpOnly",
     "SameSite=Strict",
     "Max-Age=28800", // 8 horas
@@ -50,7 +50,7 @@ export function buildAdminCookie(token: string): string {
  * Cookie para limpiar la sesión admin (logout).
  */
 export function clearAdminCookie(): string {
-  return `${ADMIN_TOKEN_COOKIE}=; Path=/admin; HttpOnly; SameSite=Strict; Max-Age=0`;
+  return `${ADMIN_TOKEN_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`;
 }
 
 /**
