@@ -29,5 +29,5 @@ frontend/.astro/
 .idea/
 *.swp
 
-# Claude Code agent memory (contexto de sesión — no va al repo)
+# Claude Code — solo ignorar memoria de sesión del agente, el resto sí va al repo
 .claude/agent-memory/
