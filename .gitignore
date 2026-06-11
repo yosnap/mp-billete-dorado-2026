@@ -28,3 +28,6 @@ frontend/.astro/
 .vscode/
 .idea/
 *.swp
+
+# Claude Code agent memory (contexto de sesión — no va al repo)
+.claude/agent-memory/
