@@ -35,8 +35,28 @@ Monorepo en `/sesion-1/` con `backend/` (FastAPI) y `frontend/` (Astro 6.4).
 - `admin_token` en config con default `"change-me-in-production"` — debe sobreescribirse con env var `ADMIN_TOKEN`.
 - Script `scripts/generate_codes.py` genera CSV sin DB; `scripts/load_codes.py` inserta directamente en DB.
 
+## Decisiones de arquitectura (Phase-05)
+
+- Dominio `notifications` en `backend/app/domains/notifications/`.
+- Proveedor email: SendGrid via `sendgrid>=6.11.0` (nueva dep en pyproject.toml). Key: `SENDGRID_API_KEY`.
+- Email desencriptado solo en memoria del worker via `pgp_sym_decrypt` SQL — nunca persistido ni logueado.
+- Unsubscribe token: HMAC-SHA256 sobre `"unsub:{participant_id}"` con `secret_key`. No requiere estado en BD.
+- Rate limit de envío: `rate_limit="100/m"` en la tarea Celery `send_notification`.
+- Retry: `autoretry_for=(Exception,), max_retries=3, retry_backoff=True, retry_backoff_max=300`.
+- Celery Beat: `last_chance` el 23-sep-2026 a las 09:00 y `grand_final` el 30-sep-2026 a las 09:00.
+- Trigger desde `prizes/service.py`: tras spin ganador/no-ganador, `send_notification.delay(...)` en try/except para no revertir el spin si falla.
+- Templates Jinja2 en `PackageLoader("app.domains.notifications", "templates")` — 9 plantillas + base.html.
+- 4 tipos de marketing (golden_days, new_prizes_unlocked, last_chance, grand_final) incluyen unsubscribe_url.
+- Migración `notifications_0001` en `alembic/versions/notifications/` con branch_labels=("notifications",) y depends_on="participants_0001".
+- `admin_router` en `/api/v1/admin/notifications/`, `public_router` en `/api/v1/notifications/` (endpoint unsubscribe).
+
 ## Estado de fases
 
 - Phase-01: DONE (Setup e Infraestructura)
 - Phase-02: DONE (Dominio Códigos — validación atómica, caché Redis, rate limit, API admin)
-- Phase-03 a 08: pending
+- Phase-03: DONE (Motor Ruleta y Premios)
+- Phase-04: DONE (Participantes, Auth y Fraude)
+- Phase-05: DONE (Notificaciones y Email Automation)
+- Phase-06: DONE (Frontend Landing y Formulario)
+- Phase-07: DONE (Frontend Ruleta y Panel Admin)
+- Phase-08: pending

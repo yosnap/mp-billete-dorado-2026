@@ -12,9 +12,9 @@
 | 02 | Dominio de Códigos (SDD)          | `backend-specialist` | pending | phase-01           |
 | 03 | Motor de Ruleta y Premios         | `backend-specialist` | completed | phase-02         |
 | 04 | Participantes, Auth y Fraude      | `backend-specialist` | completed | phase-02         |
-| 05 | Notificaciones y Email Automation | `backend-specialist` | pending | phase-03, phase-04 |
+| 05 | Notificaciones y Email Automation | `backend-specialist` | completed | phase-03, phase-04 |
 | 06 | Frontend Astro 6.4 (Landing + Formulario) | `fullstack-developer` | completed | phase-02      |
-| 07 | Frontend Ruleta + Panel Admin     | `fullstack-developer` | pending | phase-03, phase-06 |
+| 07 | Frontend Ruleta + Panel Admin     | `fullstack-developer` | completed | phase-03, phase-06 |
 | 08 | Tests, Carga y QA                 | `tester`             | pending | phase-07           |
 
 ## Contexto del Proyecto
