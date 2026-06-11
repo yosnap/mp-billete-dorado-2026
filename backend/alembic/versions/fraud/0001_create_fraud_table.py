@@ -9,6 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.dialects import postgresql
 
 revision: str = "fraud_0001"
 down_revision: Union[str, None] = None
@@ -22,7 +23,7 @@ def upgrade() -> None:
         sa.Column("id", sa.UUID(), nullable=False, server_default=sa.text("gen_random_uuid()")),
         sa.Column("ip_address", sa.String(45), nullable=False),
         sa.Column("event_type", sa.String(50), nullable=False),
-        sa.Column("detail", sa.JSONB(), nullable=True),
+        sa.Column("detail", postgresql.JSONB(), nullable=True),
         sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
         sa.PrimaryKeyConstraint("id"),
     )

@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-06-10
 **Objetivo:** Construir la plataforma web completa para la campaña promocional nacional "MP Billete Dorado 2026", con validación de códigos únicos, ruleta de premios con desbloqueo progresivo y sistema de comunicación automatizada.
-**Tech stack detectado:** Python/FastAPI · PostgreSQL · Redis · Celery · Astro 6.4 · React 19 · Tailwind CSS · Docker · SDD
+**Tech stack detectado:** Python/FastAPI · PostgreSQL · Redis · Celery · Astro 6.4 · React 19 · Tailwind CSS · Docker · pnpm 11 · SDD
 
 ## Fases
 

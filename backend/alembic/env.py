@@ -8,9 +8,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from app.core.database import Base
 
 # Importar modelos para que Alembic los detecte en autogenerate
-# Se irán añadiendo conforme se creen en cada fase
-# from app.models.codes import Code  # Phase-02
-# from app.models.prizes import Prize  # Phase-03
+from app.domains.codes.models import Code  # noqa: F401  # Phase-02
 
 config = context.config
 fileConfig(config.config_file_name)

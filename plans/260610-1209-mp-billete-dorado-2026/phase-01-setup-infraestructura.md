@@ -11,22 +11,22 @@
 Configurar el repositorio, entornos Docker, esquema base de datos inicial (SDD), CI/CD y variables de entorno para que todos los demás dominios puedan arrancar sobre una base sólida.
 
 ## Contexto
-- Stack: Python 3.12+, FastAPI 0.115+, PostgreSQL 16, Redis 7, Celery, Astro 6.4, Node 22
+- Stack: Python 3.12+, FastAPI 0.115+, PostgreSQL 16, Redis 7, Celery, Astro 6.4, Node 22, **pnpm 11** (package manager del frontend — no npm)
 - [Informe Astro 6.4](../reports/astro-6-research-report.md) — sección 2.2 y 7.2
 
 ## Requisitos
 ### Funcionales
-- [ ] Repositorio Git con estructura monorepo (`backend/`, `frontend/`)
-- [ ] Docker Compose con servicios: fastapi, postgres, redis, celery-worker, astro
-- [ ] Variables de entorno documentadas por servicio (`.env.example`)
-- [ ] Migraciones Alembic iniciales (una por dominio SDD)
-- [ ] Script de carga inicial de los 45.000 códigos desde CSV
+- [x] Repositorio Git con estructura monorepo (`backend/`, `frontend/`)
+- [x] Docker Compose con servicios: fastapi, postgres, redis, celery-worker, astro
+- [x] Variables de entorno documentadas por servicio (`.env.example`)
+- [x] Migraciones Alembic iniciales (una por dominio SDD)
+- [x] Script de carga inicial de los 45.000 códigos desde CSV
 
 ### No Funcionales
-- [ ] Node 22 LTS en el contenedor Astro
-- [ ] `ASTRO_KEY` generada y compartida entre todas las instancias
-- [ ] Secrets nunca en repositorio (uso de `.env` local + CI secrets)
-- [ ] Health-check endpoints en FastAPI y Astro
+- [x] Node 22 LTS en el contenedor Astro
+- [x] `ASTRO_KEY` generada y compartida entre todas las instancias
+- [x] Secrets nunca en repositorio (uso de `.env` local + CI secrets)
+- [x] Health-check endpoints en FastAPI y Astro
 
 ## Arquitectura
 ```
@@ -64,20 +64,20 @@ docker-compose
 10. Verificar que `docker-compose up` levanta todos los servicios sin errores
 
 ## Todo List
-- [ ] Estructura de carpetas creada
-- [ ] FastAPI arranca en Docker con `/health` OK
-- [ ] Astro arranca en Docker con `/health` OK
-- [ ] PostgreSQL accesible y migraciones iniciales aplicadas
-- [ ] Redis accesible y Celery worker conectado
-- [ ] Script de carga de códigos testeado con muestra de 100 códigos
-- [ ] `.env.example` completo y documentado
-- [ ] Nginx sirve tráfico a ambos servicios
+- [x] Estructura de carpetas creada
+- [x] FastAPI arranca en Docker con `/health` OK
+- [x] Astro arranca en Docker con `/health` OK
+- [x] PostgreSQL accesible y migraciones iniciales aplicadas
+- [x] Redis accesible y Celery worker conectado
+- [x] Script de carga de códigos testeado con muestra de 100 códigos sintéticos
+- [x] `.env.example` completo y documentado
+- [x] Nginx sirve tráfico a ambos servicios
 
 ## Criterios de Éxito
-- [ ] `docker-compose up --build` levanta sin errores en entorno limpio
-- [ ] `GET /health` devuelve 200 en FastAPI y Astro
-- [ ] Alembic aplica todas las migraciones sin error
-- [ ] Script de carga importa 45.000 códigos en < 30 segundos
+- [x] `docker-compose up --build` levanta sin errores en entorno limpio
+- [x] `GET /health` devuelve 200 en FastAPI y Astro
+- [x] Alembic aplica todas las migraciones sin error
+- [x] Script de carga importa 45.000 códigos sintéticos en < 30 segundos
 
 ## Riesgos
 | Riesgo | Probabilidad | Mitigación |

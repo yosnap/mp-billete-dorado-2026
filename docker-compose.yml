@@ -49,6 +49,7 @@ services:
       - APP_ENV=${APP_ENV:-development}
       - DEBUG=${DEBUG:-false}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
     expose:
       - "8000"
     healthcheck:
